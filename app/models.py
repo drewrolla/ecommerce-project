@@ -20,6 +20,13 @@ user_pokemon = db.Table('user_pokemon',
     db.Column('pokemon_id', db.Integer, db.ForeignKey('pokemon.id')),
 )
 
+#### FINSTAGRAM SHOP STUFF ###
+finsta_shop = db.Table('finsta_shop',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('merch_id', db.Integer, db.ForeignKey('merch.id'))
+)
+
+
 # create our Models based off of our ERD
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,6 +44,11 @@ class User(db.Model, UserMixin):
     team = db.relationship("Pokemon",
         secondary = user_pokemon,
         backref='trainers',
+        lazy = 'dynamic'
+    )
+    cart = db.relationship("Merch",
+        secondary = finsta_shop,
+        backref = 'buyers',
         lazy = 'dynamic'
     )
 
@@ -72,6 +84,27 @@ class User(db.Model, UserMixin):
         # put them all together
         all = followed.union(mine).order_by(Post.date_created.desc())
         return all
+
+
+class Merch(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    price = db.Column(db.Integer)
+    description = db.Column(db.String)
+    img_url = db.Column(db.String)
+
+    def __init__(self, name, price, description, img_url):
+        self.name = name
+        self.price = price
+        self.description = description
+        self.img_url = img_url
+
+    def saveMerch(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+
 
 class Pokemon(db.Model):
     id = db.Column(db.Integer, primary_key=True)

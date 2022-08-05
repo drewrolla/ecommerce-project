@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Finstagram Shop!</h1>
+    <!-- <a href="/shop/sell" class="btn btn-primary">Sell Merch</a> -->
+    <div>
+        {% for m in merch %}
+            <a class="card text-decoration-none text-dark" style="width: 18rem;" href="{{ url_for('shop.viewMerch', merch_id=m.id) }}">
+                <img src="{{ m.img_url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">Item {{ m.id }}</h5>
+                <p class="card-text">Name: {{ m.name }}</p>
+                <p class="card-text">Price: ${{ m.price }}</p>
+                <p class="card-text">Description: {{ m.description }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

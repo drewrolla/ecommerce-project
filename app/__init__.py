@@ -8,6 +8,7 @@ from flask_moment import Moment
 from .auth.routes import auth
 from .ig.routes import ig
 from .models import User
+from .shop.routes import shop
 
 app = Flask(__name__)
 login = LoginManager()
@@ -20,6 +21,7 @@ def load_user(user_id):
 # register blueprints
 app.register_blueprint(auth)
 app.register_blueprint(ig)
+app.register_blueprint(shop)
 
 app.config.from_object(Config)
 
