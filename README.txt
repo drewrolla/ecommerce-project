@@ -1,3 +1,4 @@
+Git Cloned Shoha's repo.
 Errors I came across:
 AttributeError
 FlushError - this was because i forgot to assign an id with a primary key to a table
