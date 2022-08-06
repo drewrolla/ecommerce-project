@@ -2,7 +2,6 @@ import requests
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
 from app.models import User, db, Merch
-from app.shop.forms import SellMerchForm
 
 shop = Blueprint('shop', __name__, template_folder='shoptemplates')
 
@@ -11,15 +10,27 @@ def goToShop():
     merch = Merch.query.all()
     return render_template('shop.html', merch=merch)
 
-@shop.route('/shop/<int:merch_id>', methods=["GET", "POST"])
-def viewMerch(merch_id):
-    merch = Merch.query.get(merch_id)
-    return render_template('singleMerch.html', merch=merch)
-
-@shop.route('/cart')
+@shop.route('/cart', methods=["GET", "POST"])
 def goToCart():
-    cart = current_user.cart.all()
+    user = User.query.get(current_user.id)
+    cart = user.cart.all()
     return render_template('cart.html', cart=cart)
+
+@shop.route('/add/<string:name>')
+def addToCart(name):
+    merch = Merch.query.filter_by(name=name).first()
+    current_user.cart.append(merch)
+    db.session.commit()
+    flash('Item added to cart.', 'success')
+    return redirect(url_for('shop.goToCart'))
+
+@shop.route('/remove/<string:name>')
+def removeFromCart(name):
+    merch = Merch.query.filter_by(name=name).first()
+    current_user.cart.remove(merch)
+    db.session.commit()
+    flash('Item removed from cart.', 'success')
+    return redirect(url_for('shop.goToCart'))
 
 
 

@@ -22,6 +22,7 @@ user_pokemon = db.Table('user_pokemon',
 
 #### FINSTAGRAM SHOP STUFF ###
 finsta_shop = db.Table('finsta_shop',
+    db.Column('cart_id', db.Integer, primary_key=True),
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('merch_id', db.Integer, db.ForeignKey('merch.id'))
 )

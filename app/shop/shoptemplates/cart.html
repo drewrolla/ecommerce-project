@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
-        {% for c in merch %}
+    <div class="row">
+        {% for c in cart %}
             <div class="card text-decoration-none text-dark" style="width: 18rem;">
                 <img src="{{ c.img_url }}" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -10,8 +10,11 @@
                 <p class="card-text">Name: {{ c.name }}</p>
                 <p class="card-text">Price: ${{ c.price }}</p>
                 <p class="card-text">Description: {{ c.description }}</p>
+                <a href="{{ url_for('shop.removeFromCart', name = c.name)}}" class="btn btn-danger">Remove</a>
                 </div>
             </div>
         {% endfor %}
     </div>
 {% endblock %}
+
+<!-- It took me 3 hours to debug this code just to find out i had named something incorrectly T.T -->
