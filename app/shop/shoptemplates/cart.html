@@ -14,6 +14,10 @@
                 </div>
             </div>
         {% endfor %}
+        <div>
+            <a class="btn btn-danger" href="{{ url_for('shop.emptyCart') }}">Remove All</a>
+        </div>
+        
     </div>
 {% endblock %}
 

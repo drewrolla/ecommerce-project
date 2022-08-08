@@ -17,6 +17,7 @@ def goToCart():
     return render_template('cart.html', cart=cart)
 
 @shop.route('/add/<string:name>')
+@login_required
 def addToCart(name):
     merch = Merch.query.filter_by(name=name).first()
     current_user.cart.append(merch)
@@ -25,6 +26,7 @@ def addToCart(name):
     return redirect(url_for('shop.goToCart'))
 
 @shop.route('/remove/<string:name>')
+@login_required
 def removeFromCart(name):
     merch = Merch.query.filter_by(name=name).first()
     current_user.cart.remove(merch)
@@ -32,6 +34,16 @@ def removeFromCart(name):
     flash('Item removed from cart.', 'success')
     return redirect(url_for('shop.goToCart'))
 
+@shop.route('/remove')
+@login_required
+def emptyCart():
+    merch = Merch.query.all()
+    for m in merch:
+        if m in current_user.cart:
+            current_user.cart.remove(m)
+            db.session.commit()
+    flash('You have no items in your cart.', 'success')
+    return redirect(url_for('shop.goToCart'))
 
 
 
