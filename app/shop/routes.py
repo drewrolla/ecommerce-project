@@ -14,7 +14,11 @@ def goToShop():
 def goToCart():
     user = User.query.get(current_user.id)
     cart = user.cart.all()
-    return render_template('cart.html', cart=cart)
+    total_price = 0
+    for each in cart:
+        total_price += int(each.price)
+    total = len(cart) # shows total amount of items in cart
+    return render_template('cart.html', cart=cart, total=total, total_price=total_price)
 
 @shop.route('/add/<string:name>')
 @login_required
@@ -51,6 +55,10 @@ def viewItem(merch_id):
     merch = Merch.query.get(merch_id)
     return render_template('single.html', merch=merch)
 
+# get total price
+# for loop to go through everything in cart
+# add price of each item and sum them
+# return sum
 
 
 
