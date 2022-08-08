@@ -45,7 +45,11 @@ def emptyCart():
     flash('You have no items in your cart.', 'success')
     return redirect(url_for('shop.goToCart'))
 
-
+# look at one product in particular
+@shop.route('/shop/<int:merch_id>')
+def viewItem(merch_id):
+    merch = Merch.query.get(merch_id)
+    return render_template('single.html', merch=merch)
 
 
 
